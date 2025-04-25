@@ -1,0 +1,15 @@
+id,dept,number,section,name,time,prof
+1,COMP,141,1,Comp Sci I,9:00AM,Sanders
+2,COMP,141,2,Comp Sci I,10:00AM,Superdock
+3,COMP,141,3,Comp Sci I,11:00AM,Superdock
+4,COMP,142,1,Comp Sci II,9:00AM,Phillips
+5,COMP,142,2,Comp Sci II,10:00AM,Phillips
+6,COMP,172,1,Discrete Structures,1:00PM,Kirlin
+7,COMP,231,1,Computer Organization,2:00PM,Larkins
+8,COMP,241,1,Algorithms & Data Structures,3:00PM,Welsh
+9,COMP,340,1,Databases,11:00AM,Kirlin
+10,COMP,372,1,Artificial Intelligence,2:00PM,Kirlin
+11,COMP,345,1,Data Mining,10:00AM,Welsh
+12,COMP,355,1,Advanced Algorithms,12:00PM,Sanders
+13,COMP,330,1,Operating Systems,1:00PM,Larkins
+14,COMP,486,1,Senior Seminar,3:00PM,Kugele
