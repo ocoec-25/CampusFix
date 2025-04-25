@@ -16,37 +16,37 @@ def main():
     #cur.execute("DELETE FROM enroll")
 
     with open("users.csv", 'r') as file:
-         with cur.copy(f"COPY courses FROM STDIN WITH (FORMAT CSV, HEADER true)") as copy:
+         with cur.copy(f"COPY users FROM STDIN WITH (FORMAT CSV, HEADER true)") as copy:
             copy.write(file.read())
     conn.commit()
 
     with open("isAdmin.csv", 'r') as file:
-        with cur.copy(f"COPY students FROM STDIN WITH (FORMAT CSV, HEADER true)") as copy:
+        with cur.copy(f"COPY isAdmin FROM STDIN WITH (FORMAT CSV, HEADER true)") as copy:
             copy.write(file.read())
     conn.commit()
 
     with open("isWorker.csv", 'r') as file:
-        with cur.copy(f"COPY enroll FROM STDIN WITH (FORMAT CSV, HEADER true)") as copy:
+        with cur.copy(f"COPY isWorker FROM STDIN WITH (FORMAT CSV, HEADER true)") as copy:
             copy.write(file.read())
     conn.commit()
 
     with open("tickets.csv", 'r') as file:
-         with cur.copy(f"COPY courses FROM STDIN WITH (FORMAT CSV, HEADER true)") as copy:
+         with cur.copy(f"COPY tickets FROM STDIN WITH (FORMAT CSV, HEADER true)") as copy:
             copy.write(file.read())
     conn.commit()
 
     with open("ticketStatus.csv.csv", 'r') as file:
-         with cur.copy(f"COPY courses FROM STDIN WITH (FORMAT CSV, HEADER true)") as copy:
+         with cur.copy(f"COPY ticketStatus FROM STDIN WITH (FORMAT CSV, HEADER true)") as copy:
             copy.write(file.read())
     conn.commit()
 
     with open("reports.csv", 'r') as file:
-         with cur.copy(f"COPY courses FROM STDIN WITH (FORMAT CSV, HEADER true)") as copy:
+         with cur.copy(f"COPY reports FROM STDIN WITH (FORMAT CSV, HEADER true)") as copy:
             copy.write(file.read())
     conn.commit()
 
     with open("assigns.csv.csv", 'r') as file:
-         with cur.copy(f"COPY courses FROM STDIN WITH (FORMAT CSV, HEADER true)") as copy:
+         with cur.copy(f"COPY assigns FROM STDIN WITH (FORMAT CSV, HEADER true)") as copy:
             copy.write(file.read())
     conn.commit()
 
