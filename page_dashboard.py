@@ -28,14 +28,14 @@ def dashboard():
 
     ui.markdown("# Super cool dashboard!")
 
-    class_data = get_courses_by_enrollment()
-    print(class_data)
+    #class_data = get_courses_by_enrollment()
+    #print(class_data)
 
-    class_names = [row['department'] + str(row['course_number']) + "-" + str(row["course_section"]) for row in class_data]
-    student_counts = [row['num_enrolled'] for row in class_data]
+    #class_names = [row['department'] + str(row['course_number']) + "-" + str(row["course_section"]) for row in class_data]
+    #student_counts = [row['num_enrolled'] for row in class_data]
 
     ui.echart({
-        'title': {'text': 'Class Enrollment'},
+        'title': {'text': 'CampusFix'},
         'tooltip': {'trigger': 'axis'},
         'xAxis': {
             'type': 'category',
