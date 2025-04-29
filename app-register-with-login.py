@@ -14,10 +14,34 @@ conn = psycopg.connect(f"host=dbclass.rhodescs.org dbname=practice user={DBUSER}
 # Open a cursor to perform database operations
 cur = conn.cursor(row_factory=dict_row)
 
-def get_students():
-    cur.execute("SELECT student_id, first_name, last_name, grad_year FROM students")
+def get_tickets():
+    cur.execute("SELECT tid, subject, location, description, priority FROM tickets")
     rows = cur.fetchall()
     return rows
+
+def get_reports(userid): #might need to add another def for getting reports by tid?
+    cur.execute("SELECT tid, reporterid FROM reports")
+    rows = cur.fetchall()
+    return rows
+
+def get_assignments():
+    cur.execute("SELECT tid, workerid FROM assigns") #might add join statement here to automatically see if worker is assigned to this particular ticket
+    rows = cur.fetchall()
+    return rows
+
+def check_admin(id):
+    cur.execute("SELECT adminid FROM isadmin WHERE adminid=%", [id]) #probably need to fix this
+    rows = cur.fetchall()
+    return rows #thinking about adding a true or false statement here
+
+def check_status(tid):
+    cur.execute("SELECT status from ticketstatus where tid=%s", [tid])
+    result = cur.fetchone()
+    if result is not None:
+        return str(result['status']) #return the status of a specific ticket
+    else:
+        print("ticket not found.")
+        return None
 
 def get_classes_for_student(student_id):
     cur.execute("SELECT * from enroll NATURAL JOIN courses WHERE student_id=%s", [student_id])
@@ -55,6 +79,7 @@ def homepage():
     ui.link("Login", '/login')
     ui.link("Logout", '/logout')
     ui.link("Create Ticket", '/report')
+    ui.link("Check Ticket Status", '/status')
     ui.link("Admin Dashboard", '/admin')
     ui.link("Password-protected test page", '/protected')
     ui.link("Admin Dashboard", '/admin')
@@ -88,7 +113,9 @@ def logout():
 
 @ui.page('/report')
 def report():
-    reports_rows = get_tickets() 
+
+    ui.button('Submit Ticket', on_click=lambda: process_step2())
+    reports_rows = get_tickets()
     my_new_classes_table.add_rows(schedule_rows)
     my_new_classes_table.update()
 
@@ -116,7 +143,7 @@ def report():
                                        selection='single', row_key='course_id',
                                        on_select=lambda e: click_class(e))
 
-        ui.button('Register!', on_click=lambda: process_step2())
+        ui.button('Submit Ticket', on_click=lambda: process_step2())
 
     with ui.card() as step3_card:
         ui.label("New Schedule:")
@@ -169,6 +196,15 @@ def report():
 
 @ui.page('/admin')
 def admin():
+
+@ui.page('/worker')
+def worker():
+
+@ui.page('/status')
+def status():
+
+@ui.page('/drop')
+def drop():
     selected_student = None
     selected_class = None
     with ui.card() as step1_card:
