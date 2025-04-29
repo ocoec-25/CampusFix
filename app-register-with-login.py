@@ -30,11 +30,17 @@ def get_non_conflicting_classes_for_student(student_id):
     rows = cur.fetchall()
     return rows
 
-# pretend graduation year is the user's password
-def get_password_for_user(student_id):
-    cur.execute("SELECT grad_year from students where student_id=%s", [student_id])
-    row = cur.fetchone()
-    return str(row['grad_year'])  # return as a string to simulate a password
+# user's password (WORKING!)
+def get_password_for_user(username):
+    cur.execute("SELECT password from users where email=%s", [username])
+    result = cur.fetchone()
+    if result is not None:
+        #print(str(result['password']))
+        return str(result['password'])
+    else:
+        print("user not found, would you like to create an account?")
+        return None
+
 
 @ui.page('/')
 def homepage():
@@ -48,9 +54,11 @@ def homepage():
 
     ui.link("Login", '/login')
     ui.link("Logout", '/logout')
-    ui.link("Register for classes", '/register')
-    ui.link("Drop a class", '/drop')
+    ui.link("Create Ticket", '/report')
+    ui.link("Admin Dashboard", '/admin')
     ui.link("Password-protected test page", '/protected')
+    ui.link("Admin Dashboard", '/admin')
+    ui.link("Worker Dashboard", '/worker')
     ui.link("Dashboard", '/dashboard')
 
 
@@ -66,10 +74,10 @@ def login(redirect_url = '/'):
 
     #if app.storage.user.get('authenticated', False):
     #        return RedirectResponse('/')
-    ui.label("Use a user_id number for username and the grad year for password.")
+    ui.label("Use email for username and enter your password.")
     with ui.row().classes('items-center'):
         username_box = ui.input('Username:')
-        password_box = ui.input('Password', password=True, password_toggle_button=True)
+        password_box = ui.input('Password:', password=True, password_toggle_button=True)
         ui.button('Log in', on_click=try_login)
 
 @ui.page('/logout')
@@ -78,8 +86,13 @@ def logout():
     ui.label("You are now logged out.")
     ui.link("Back to homepage", '/')
 
-@ui.page('/register')
-def register():
+@ui.page('/report')
+def report():
+    reports_rows = get_tickets() 
+    my_new_classes_table.add_rows(schedule_rows)
+    my_new_classes_table.update()
+
+    ##old code below
     selected_student = None
     selected_class = None
     with ui.card() as step1_card:
@@ -154,8 +167,8 @@ def register():
         step2_card.set_visibility(False)
         step3_card.set_visibility(True)
 
-@ui.page('/drop')
-def drop():
+@ui.page('/admin')
+def admin():
     selected_student = None
     selected_class = None
     with ui.card() as step1_card:
@@ -232,3 +245,4 @@ def drop():
 
 
 ui.run(reload=False, storage_secret='THIS_NEEDS_TO_BE_CHANGED')
+
