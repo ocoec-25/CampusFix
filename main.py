@@ -2,7 +2,7 @@ import psycopg
 from psycopg.rows import dict_row
 from dbinfo import *
 from nicegui import ui, app
-from adminDashboard import show_tickets_admin, show_workers_admin, show_users_admin
+from adminDashboard import admin
 
 # Connect to db and open curser
 conn = psycopg.connect(f"host=dbclass.rhodescs.org dbname=practice user={DBUSER} password={DBPASS}")
@@ -106,18 +106,8 @@ def login(redirect_url='/'):
 
 @ui.page('/admin')
 def admin_page():
-    with ui.tabs().classes('w-full') as tabs:
-        tickets_tab = ui.tab('Tickets')
-        workers_tab = ui.tab('Workers')
-        users_tab = ui.tab('Users')
+    admin(cur)
 
-    with ui.tab_panels(tabs, value=tickets_tab).classes('w-full'):
-        with ui.tab_panel(tickets_tab):
-            show_tickets_admin(cur)
-        with ui.tab_panel(workers_tab):
-            show_workers_admin(cur)
-        with ui.tab_panel(users_tab):
-            show_users_admin(cur)
 
 @ui.page('/logout')
 def logout():
