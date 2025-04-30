@@ -3,6 +3,7 @@ from psycopg.rows import dict_row
 from dbinfo import *
 from nicegui import ui, app
 from adminDashboard import admin
+from workerDashboard import worker
 
 # Connect to db and open curser
 conn = psycopg.connect(f"host=dbclass.rhodescs.org dbname=practice user={DBUSER} password={DBPASS}")
@@ -24,6 +25,12 @@ def is_admin(user_id):
     result = cur.fetchone()
     return result is not None
 
+# WORKER CHECK
+def is_worker(user_id):
+    cur.execute("SELECT workerID FROM isworker WHERE workerID=%s", [user_id])
+    result = cur.fetchone()
+    return result is not None
+
 
 @ui.page('/')
 def homepage():
@@ -34,6 +41,7 @@ def homepage():
     if username is not None:
         user_id = app.storage.user.get('user_id', None)
         is_user_admin = app.storage.user.get('is_admin', False)
+
 
         with ui.card().classes('w-full'):
             ui.label(f"You are logged in as: {username}").classes('font-bold')
@@ -68,6 +76,9 @@ def get_workers():
     return rows
 
 
+
+
+#login page
 @ui.page('/login')
 def login(redirect_url='/'):
     def try_login():
@@ -77,9 +88,13 @@ def login(redirect_url='/'):
             app.storage.user['username'] = username_box.value
             app.storage.user['user_id'] = user_data['userid']
 
-            #IF ADMIN
+            #IF ADMIN (store info in session)
             admin_status = is_admin(user_data['userid'])
             app.storage.user['is_admin'] = admin_status
+
+            #IF WORKER (store info in session)
+            worker_status = is_worker(user_data['userid'])
+            app.storage.user['is_worker'] = worker_status
 
             # LOGIN SUCCESS
             if admin_status:
@@ -120,7 +135,7 @@ def admin_page():
 #WORKER DASHBOARD PAGE
 @ui.page('/worker')
 def worker_page():
-    worker_page(cur)
+    worker(cur)
 
 
 @ui.page('/logout')
