@@ -3,14 +3,12 @@ from psycopg.rows import dict_row
 from dbinfo import *
 from nicegui import ui, app
 
-# Connect to an existing database
+# Connect to db and open curser
 conn = psycopg.connect(f"host=dbclass.rhodescs.org dbname=practice user={DBUSER} password={DBPASS}")
-
-# Open a cursor to perform database operations
 cur = conn.cursor(row_factory=dict_row)
 
 
-# Function to get user's password
+# PASSWORD CHECK
 def get_password_for_user(username):
     cur.execute("SELECT password, userID from users where email=%s", [username])
     result = cur.fetchone()
@@ -20,7 +18,7 @@ def get_password_for_user(username):
         return None
 
 
-# Function to check if a user is an admin
+# ADMIN CHECK
 def is_admin(user_id):
     cur.execute("SELECT adminID FROM isAdmin WHERE adminID=%s", [user_id])
     result = cur.fetchone()
@@ -29,9 +27,9 @@ def is_admin(user_id):
 
 @ui.page('/')
 def homepage():
-    ui.label("Welcome to CampusFix - Ticket Management System").classes('text-2xl font-bold mb-4')
+    ui.label("CampusFix: Rhodes Issue Report System").classes('text-2xl font-bold mb-4')
 
-    # Check if user is logged in
+    # IF LOGGED IN
     username = app.storage.user.get('username', None)
     if username is not None:
         user_id = app.storage.user.get('user_id', None)
@@ -54,7 +52,7 @@ def homepage():
                 ui.button('Check Ticket Status', on_click=lambda: ui.navigate.to('/status')).classes(
                     'bg-yellow-500 text-white')
 
-                if user_id in [w['workerID'] for w in get_workers()]:
+                if user_id in [w['workerid'] for w in get_workers()]:
                     ui.button('Worker Dashboard', on_click=lambda: ui.navigate.to('/worker')).classes(
                         'bg-purple-500 text-white')
     else:
@@ -64,7 +62,7 @@ def homepage():
 
 
 def get_workers():
-    cur.execute("SELECT workerID FROM isWorker")
+    cur.execute("SELECT workerid FROM isworker")
     rows = cur.fetchall()
     return rows
 
