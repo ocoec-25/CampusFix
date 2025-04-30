@@ -121,7 +121,7 @@ def login(redirect_url='/'):
 @ui.page('/createticket')
 def createTicket():
     createTicket(cur)
-h
+
 #CHECK TICKET STATUS PAGE
 @ui.page('/checkticketstatus')
 def checkTicketStatus():
