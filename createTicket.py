@@ -16,5 +16,5 @@ def ticket(cur):
 
 
 def insert_ticket(cur):
-    cur.execute("""Insert
+    cur.execute("""
     """)
