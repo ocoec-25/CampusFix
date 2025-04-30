@@ -18,7 +18,6 @@ def get_password_for_user(username):
     else:
         return None
 
-
 # ADMIN CHECK
 def is_admin(user_id):
     cur.execute("SELECT adminID FROM isAdmin WHERE adminID=%s", [user_id])
@@ -62,7 +61,7 @@ def homepage():
             ui.label("You are not logged in").classes('mb-2')
             ui.button('Login', on_click=lambda: ui.navigate.to('/login')).classes('bg-blue-500 text-white')
 
-
+#check if worker
 def get_workers():
     cur.execute("SELECT workerid FROM isworker")
     rows = cur.fetchall()
@@ -103,10 +102,25 @@ def login(redirect_url='/'):
                 ui.button('Back to Home', on_click=lambda: ui.navigate.to('/')).classes('bg-gray-500 text-white')
                 ui.button('Log in', on_click=try_login).classes('bg-blue-500 text-white')
 
+#CREATE TICKET PAGE
+@ui.page('/createticket')
+def createTicket():
+    createTicket(cur)
 
+#CHECK TICKET STATUS PAGE
+@ui.page('/checkticketstatus')
+def checkTicketStatus():
+    checkTicketStatus(cur)
+
+#ADMIN DASHBOARD PAGE
 @ui.page('/admin')
 def admin_page():
     admin(cur)
+
+#WORKER DASHBOARD PAGE
+@ui.page('/worker')
+def worker_page():
+    worker_page(cur)
 
 
 @ui.page('/logout')
@@ -121,4 +135,4 @@ def logout():
 
 
 # Run the app
-ui.run(reload=False, storage_secret='THIS_NEEDS_TO_BE_CHANGED')
+ui.run(reload=False, storage_secret='secret')
