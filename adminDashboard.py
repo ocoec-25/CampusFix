@@ -30,18 +30,24 @@ def admin(cur):
 
         with ui.tab_panel(users_tab):
             show_users_admin(cur)
-
-
 def show_tickets_admin(cur):
+    def update_priority(e):
+        tid = e.args[0]
+        new_priority = e.args[1]
+        cur.execute("UPDATE tickets SET priority = %s WHERE tid = %s", (new_priority, tid))
+        cur.connection.commit()
+        ui.notify(f"Priority for ticket {tid} updated to {new_priority}", type='positive')
+        ui.run_javascript("location.reload()")
+
     cur.execute("""
         SELECT t.tid, t.subject, t.location, t.description, t.priority, 
-               ts.status, ts.adminPriority, 
+               ts.status, 
                u.first_name || ' ' || u.last_name as reporter_name
         FROM tickets t
         JOIN ticketStatus ts ON t.tid = ts.tid
         JOIN reports r ON t.tid = r.tid
         JOIN users u ON r.reporterID = u.userID
-        ORDER BY ts.adminPriority DESC
+        ORDER BY t.priority DESC
     """)
     tickets = cur.fetchall()
 
@@ -53,18 +59,25 @@ def show_tickets_admin(cur):
         {'name': 'location', 'label': 'Location', 'field': 'location', 'sortable': True},
         {'name': 'status', 'label': 'Status', 'field': 'status', 'sortable': True},
         {'name': 'reporter', 'label': 'Reporter', 'field': 'reporter_name', 'sortable': True},
-        {'name': 'priority', 'label': 'Priority', 'field': 'priority', 'sortable': True},
-        {'name': 'adminPriority', 'label': 'Admin Priority', 'field': 'adminpriority', 'sortable': True},
+        {'name': 'priority', 'label': 'Priority', 'field': 'priority', 'sortable': False},
     ]
 
     with ui.table(columns=columns, rows=tickets, row_key='tid').classes('w-full') as table:
-        table.add_slot('body-cell-status', '''
+        table.add_slot('body-cell-priority', '''
             <q-td :props="props">
-                <q-chip :color="props.value === 'open' ? 'green' : 'gray'">
-                    {{ props.value }}
-                </q-chip>
+                <q-select
+                    :options="[1,2,3,4,5]"
+                    v-model="props.row.priority"
+                    dense
+                    outlined
+                    emit-value
+                    map-options
+                    @update:model-value="value => $parent.$emit('update-priority', props.row.tid, value)"
+                    style="width: 80px;"
+                />
             </q-td>
         ''')
+        table.on('update-priority', update_priority)
 
 
 def show_workers_admin(cur):
