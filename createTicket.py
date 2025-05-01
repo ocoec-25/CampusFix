@@ -7,7 +7,10 @@ def ticket(cur):
         return ui.navigate.to('/login?redirect_url=/admin')
 
     with ui.row():
-        ui.input("Subject")
+        subject_input = ui.input(label = "Subject", placeholder = "Start Typing").classes("w-64")
+        location_input = ui.input(label = "Location", placeholder = "Start Typing").classes("w-64")
+        description_input = ui.input(label = "Description", placeholder = "Start Typing").classes("w-64")
+        priority_input = ui.select(['1', '2', '3', '4', '5'],value = "1", label="Priority").classes("w-64")
 
 
 
