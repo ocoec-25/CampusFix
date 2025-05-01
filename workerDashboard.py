@@ -25,6 +25,7 @@ def worker(cur):
             show_tickets_worker(cur)
 
 def show_tickets_worker(cur):
+    ui.button('Back to Home', on_click=lambda: ui.navigate.to('/')).classes('bg-green-500 text-white')
     worker_id = app.storage.user.get('user_id', None)
 
     cur.execute("""
@@ -62,4 +63,6 @@ def show_tickets_worker(cur):
                 </q-chip>
             </q-td>
         ''')
+
+
 

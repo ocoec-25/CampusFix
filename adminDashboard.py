@@ -31,6 +31,7 @@ def admin(cur):
         with ui.tab_panel(users_tab):
             show_users_admin(cur)
 def show_tickets_admin(cur):
+    ui.button('Back to Home', on_click=lambda: ui.navigate.to('/')).classes('bg-green-500 text-white')
     def update_priority(e):
         tid = e.args[0]
         new_priority = e.args[1]
@@ -79,6 +80,7 @@ def show_tickets_admin(cur):
         ''')
         table.on('update-priority', update_priority)
 
+
         def update_status(e):
             tid = e.args[0]
             new_status = e.args[1]
@@ -105,7 +107,9 @@ def show_tickets_admin(cur):
         table.on('update-status', update_status)
 
 
+
 def show_workers_admin(cur):
+    ui.button('Back to Home', on_click=lambda: ui.navigate.to('/')).classes('bg-green-500 text-white')
     cur.execute("""
         SELECT w.workerID, u.first_name, u.last_name, w.department, w.specialty, u.email, u.role
         FROM isWorker w
@@ -131,7 +135,9 @@ def show_workers_admin(cur):
     ui.table(columns=columns, rows=workers, row_key='workerid').classes('w-full')
 
 
+
 def show_users_admin(cur):
+    ui.button('Back to Home', on_click=lambda: ui.navigate.to('/')).classes('bg-green-500 text-white')
     cur.execute("""
         SELECT userID, email, first_name, last_name, role
         FROM users
@@ -152,3 +158,4 @@ def show_users_admin(cur):
     ]
 
     ui.table(columns=columns, rows=users, row_key='userid').classes('w-full')
+
