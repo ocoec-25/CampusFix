@@ -5,10 +5,8 @@ def ticket(cur):
     if username is None:
         return ui.navigate.to('/login?redirect_url=/admin')
 
-    with ui.card() as ticket_card:
-        with ui.row().classes('items-center'):
-            ui.label('Subject:')
-            student_id_box = ui.input()
+    with ui.row():
+        ui.input("Subject")
 
 
 
