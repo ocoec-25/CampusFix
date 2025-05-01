@@ -22,6 +22,7 @@ def ticket(cur):
         user_id = app.storage.user.get("user_id", None)
 
         cur.execute("INSERT INTO reports (reporterid, tid) VALUES (%s, %s)", (user_id, new_tid))
+        cur.connection.commit()
 
 
     def insert_ticket(cur, subject, location, description, priority):
@@ -35,6 +36,7 @@ def ticket(cur):
             "INSERT INTO ticketStatus (tid, status, adminPriority) VALUES (%s, %s, %s)",
             (new_tid, "open", priority)  # Setting initial status as "open" and adminPriority same as user priority
         )
+        cur.connection.commit()
 
         return new_tid
 
