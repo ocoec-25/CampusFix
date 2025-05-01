@@ -82,11 +82,13 @@ def ticket(cur):
                                        label="Priority (1-5, 5 is highest)").classes("w-64")
         with ui.row():
             ui.button("Submit Ticket", on_click=submit_ticket).classes("bg-blue-500 text-white")
+            ui.button('Back to Home', on_click=lambda: ui.navigate.to('/')).classes('bg-green-500 text-white')
 
     with ui.card() as step2_card:
         step2_card.set_visibility(False)
         success_message = ui.label("Ticket created successfully!")
         ui.button("Create Another Ticket", on_click=reset_form).classes("bg-green-500 text-white")
+        ui.button('Back to Home', on_click=lambda: ui.navigate.to('/')).classes('bg-green-500 text-white')
 
     with ui.card() as error_card:
         error_card.set_visibility(False)
