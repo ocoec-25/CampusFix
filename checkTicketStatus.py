@@ -48,6 +48,6 @@ def status(cur):
         ui.label("My Tickets").classes('text-xl font-bold')
         table = ui.table(columns=columns, rows=rows, row_key='tid', selection='single', on_select = lambda e: click_ticket(t)).classes('w-full')
 
-        #ui.button('View Ticket', on_click=lambda: process_step1())
+        ui.button('Back to Home', on_click=lambda: ui.navigate.to('/')).classes('bg-green-500 text-white')
 
 

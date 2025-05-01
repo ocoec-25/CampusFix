@@ -90,7 +90,7 @@ def show_tickets_admin(cur):
         table.add_slot('body-cell-status', '''
             <q-td :props="props">
                 <q-select
-                    :options="['Open', 'In Progress', 'Resolved', 'Closed']"
+                    :options="['Open', 'In Progress', 'Closed']"
                     v-model="props.row.status"
                     dense
                     outlined
