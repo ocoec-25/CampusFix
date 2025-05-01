@@ -36,6 +36,8 @@ def is_worker(user_id):
 
 @ui.page('/')
 def homepage():
+    ui.query('body').classes('bg-gradient-to-t from-blue-400 to-blue-100')
+
     ui.label("CampusFix: Rhodes Issue Report System").classes('text-2xl font-bold mb-4')
 
     # IF LOGGED IN
@@ -83,6 +85,7 @@ def get_workers():
 #login page
 @ui.page('/login')
 def login(redirect_url='/'):
+    ui.query('body').classes('bg-gradient-to-t from-blue-400 to-blue-100')
     def try_login():
         user_data = get_password_for_user(username_box.value)
         if user_data and user_data['password'] == password_box.value:
@@ -122,26 +125,31 @@ def login(redirect_url='/'):
 #CREATE TICKET PAGE
 @ui.page('/createticket')
 def createTicket():
+    ui.query('body').classes('bg-gradient-to-t from-blue-400 to-blue-100')
     ticket(cur)
 
 #CHECK TICKET STATUS PAGE
 @ui.page('/checkticketstatus')
 def checkTicketStatus():
+    ui.query('body').classes('bg-gradient-to-t from-blue-400 to-blue-100')
     status(cur)
 
 #ADMIN DASHBOARD PAGE
 @ui.page('/admin')
 def admin_page():
+    ui.query('body').classes('bg-gradient-to-t from-blue-400 to-blue-100')
     admin(cur)
 
 #WORKER DASHBOARD PAGE
 @ui.page('/worker')
 def worker_page():
+    ui.query('body').classes('bg-gradient-to-t from-blue-400 to-blue-100')
     worker(cur)
 
 
 @ui.page('/logout')
 def logout():
+    ui.query('body').classes('bg-gradient-to-t from-blue-400 to-blue-100')
     # Clear all user data from session
     app.storage.user.clear()
 
