@@ -79,6 +79,31 @@ def show_tickets_admin(cur):
         ''')
         table.on('update-priority', update_priority)
 
+        def update_status(e):
+            tid = e.args[0]
+            new_status = e.args[1]
+            cur.execute("UPDATE ticketStatus SET status = %s WHERE tid = %s", (new_status, tid))
+            cur.connection.commit()
+            ui.notify(f"Status for ticket {tid} updated to '{new_status}'", type='positive')
+            ui.run_javascript("location.reload()")
+
+        table.add_slot('body-cell-status', '''
+            <q-td :props="props">
+                <q-select
+                    :options="['Open', 'In Progress', 'Resolved', 'Closed']"
+                    v-model="props.row.status"
+                    dense
+                    outlined
+                    emit-value
+                    map-options
+                    @update:model-value="value => $parent.$emit('update-status', props.row.tid, value)"
+                    style="width: 140px;"
+                />
+            </q-td>
+        ''')
+
+        table.on('update-status', update_status)
+
 
 def show_workers_admin(cur):
     cur.execute("""
