@@ -24,22 +24,25 @@ def worker(cur):
         with ui.tab_panel(tickets_tab):
             show_tickets_worker(cur)
 
-
-
 def show_tickets_worker(cur):
+    worker_id = app.storage.user.get('user_id', None)
+
     cur.execute("""
-        SELECT t.tid, t.subject, t.location, t.description, t.priority, 
-               ts.status, ts.adminPriority, 
-               u.first_name || ' ' || u.last_name as reporter_name
-        FROM tickets t
-        JOIN ticketStatus ts ON t.tid = ts.tid
-        JOIN reports r ON t.tid = r.tid
-        JOIN users u ON r.reporterID = u.userID
-        ORDER BY ts.adminPriority DESC
-    """)
+            SELECT t.tid, t.subject, t.location, t.description, t.priority, 
+                   ts.status, ts.adminPriority, 
+                   u.first_name || ' ' || u.last_name as reporter_name
+            FROM tickets t
+            JOIN ticketStatus ts ON t.tid = ts.tid
+            JOIN reports r ON t.tid = r.tid
+            JOIN users u ON r.reporterID = u.userID
+            JOIN assigns a ON t.tid = a.tid
+            WHERE a.workerID = %s
+            ORDER BY ts.adminPriority DESC
+        """, [worker_id])
     tickets = cur.fetchall()
 
-    ui.label("All Tickets").classes('text-xl font-bold mt-4')
+    ui.label("Tickets Assigned to Me").classes('text-xl font-bold mt-4')
+
 
     columns = [
         {'name': 'tid', 'label': 'ID', 'field': 'tid', 'sortable': True},
