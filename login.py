@@ -4,6 +4,8 @@ from dbinfo import *
 from nicegui import ui, app
 from adminDashboard import admin
 from workerDashboard import worker
+from createTicket import ticket
+from checkTicketStatus import status
 
 # Connect to db and open curser
 conn = psycopg.connect(f"host=dbclass.rhodescs.org dbname=practice user={DBUSER} password={DBPASS}")
@@ -58,7 +60,7 @@ def homepage():
 
                 ui.button('Create Ticket', on_click=lambda: ui.navigate.to('/createticket')).classes(
                     'bg-green-500 text-white')
-                ui.button('Check Ticket Status', on_click=lambda: ui.navigate.to('/status')).classes(
+                ui.button('Check Ticket Status', on_click=lambda: ui.navigate.to('/checkticketstatus')).classes(
                     'bg-yellow-500 text-white')
                 # IF WORKER
                 if user_id in [w['workerid'] for w in get_workers()]:
@@ -125,7 +127,7 @@ def createTicket():
 #CHECK TICKET STATUS PAGE
 @ui.page('/checkticketstatus')
 def checkTicketStatus():
-    checkTicketStatus(cur)
+    status(cur)
 
 #ADMIN DASHBOARD PAGE
 @ui.page('/admin')
