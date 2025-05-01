@@ -1,6 +1,6 @@
+from nicegui import ui, app
 #TODO
 #user or admin can delete ticket and check status
-from nicegui import ui, app
 
 def status(cur):
 
@@ -13,7 +13,7 @@ def status(cur):
 
     ui.label("My Tickets").classes('text-2xl font-bold mb-4')
 
-    def show_user_tickets(cur):
+    def show_user_tickets():
         cur.execute("""
             SELECT t.tid, t.subject, t.reporterid
             FROM tickets t
@@ -23,20 +23,21 @@ def status(cur):
         """, [username])
         tickets = cur.fetchall()
 
-        ui.label("All Tickets").classes('text-xl font-bold mt-4')
+        with ui.card() as step1_card:
+            ui.label("All Tickets").classes('text-xl font-bold mt-4')
 
-        columns = [
-            {'name': 'tid', 'label': 'ID', 'field': 'tid', 'sortable': True},
-            {'name': 'subject', 'label': 'Subject', 'field': 'subject', 'sortable': True},
-            {'name': 'reporterid', 'label': 'Reporter ID', 'field': 'reporterid', 'sortable': True},
-        ]
+            columns = [
+                {'name': 'tid', 'label': 'ID', 'field': 'tid', 'sortable': True},
+                {'name': 'subject', 'label': 'Subject', 'field': 'subject', 'sortable': True},
+                {'name': 'reporterid', 'label': 'Reporter ID', 'field': 'reporterid', 'sortable': True},
+            ]
 
-        with ui.table(columns=columns, rows=tickets, row_key='tid').classes('w-full') as table:
-            table.add_slot('body-cell-status', '''
-                    <q-td :props="props">
-                        <q-chip :color="props.value === 'open' ? 'green' : 'gray'">
-                            {{ props.value }}
-                        </q-chip>
-                    </q-td>
-                ''')
+            with ui.table(columns=columns, rows=tickets, row_key='tid').classes('w-full') as table:
+                table.add_slot('body-cell-status', '''
+                        <q-td :props="props">
+                            <q-chip :color="props.value === 'open' ? 'green' : 'gray'">
+                                {{ props.value }}
+                            </q-chip>
+                        </q-td>
+                    ''')
 
