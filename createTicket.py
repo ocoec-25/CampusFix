@@ -1,5 +1,6 @@
 #TODO
 from nicegui import ui, app
+
 def ticket(cur):
     username = app.storage.user.get("username", None)
     if username is None:

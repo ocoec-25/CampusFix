@@ -56,7 +56,7 @@ def homepage():
                     ui.button('Admin Dashboard', on_click=lambda: ui.navigate.to('/admin')).classes(
                         'bg-blue-500 text-white')
 
-                ui.button('Create Ticket', on_click=lambda: ui.navigate.to('/report')).classes(
+                ui.button('Create Ticket', on_click=lambda: ui.navigate.to('/createticket')).classes(
                     'bg-green-500 text-white')
                 ui.button('Check Ticket Status', on_click=lambda: ui.navigate.to('/status')).classes(
                     'bg-yellow-500 text-white')
@@ -120,7 +120,7 @@ def login(redirect_url='/'):
 #CREATE TICKET PAGE
 @ui.page('/createticket')
 def createTicket():
-    createTicket(cur)
+    ticket(cur)
 
 #CHECK TICKET STATUS PAGE
 @ui.page('/checkticketstatus')
